@@ -168,12 +168,12 @@ You should:
 
 **Important** The score should be sorted from high to low on the list. The data time can be any format, but should include all the information of "hour, minute, second, date and year'.
 
-## Task 5: Implement the *About* Page
+## Task 8: Implement the *About* Page
 It doesn't have to be like mine, and it doesn't have to use gestures, but it
 should be fancy. Use `UIBezierPath` or `CGPath` to draw something a diagram, make a little
 mini-game or animation, be creative! 
 
-## Task 6: Portrait vs. Landscape
+## Task 9: Portrait vs. Landscape
 Until now, we only implement the app based on a Portrait-position screen. We should implement the app in a Landscape screen as well. You can create a variable as `var orientation: UIDeviceOrientation = UIDevice.current.orientation` to check the current orientation of the screen and modify the UIView accordingly. `orientation.isLandscape` will return true if the screen is on a Landscape mode now. And `orientation == UIDeviceOrientation.portraitUpsideDown` will return true if now the screen is now upside down.  We will test your work by rotating the screen, we should see the position of game board and buttons are arranged well on each screen orientation.
 
 ## Grading
