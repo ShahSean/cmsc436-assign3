@@ -83,7 +83,7 @@ You may revise the spawn() method in Model or related method in View so that eac
 ## Task 3: Animation
 You need to implement "tile moving animation" to show the movements of tiles while clicking the direction buttons. 
 
-Hint: You can implement the animation of tile movement by adding animation keywords at 2 locations of your implementation:
+Hint: You can implement the animation of tile movement by adding animation keywords at 2 locations of your implementation. You may also need to use .offset with variables to determine the start and end location of each tile. Example:
 
 1. tileView:
 ```
@@ -92,7 +92,8 @@ ForEach (0..<tiles.count, id: \.self) { i in
         .animation(.easeInOut(duration: 1))
 ```
 2. Button:
-```Button (action: withAnimation
+```
+Button (action: withAnimation
 {movingUp}) {
     Text("Up")
 }
@@ -105,14 +106,13 @@ In the last project, we never handled a situation when our game failed or ended.
 
 When will the game end?
 
-1. There is no any empty tile or possible moves of the tiles in the board.
+1. When there is no any empty tile or possible moves of the tiles in the board.
 You should handle the situation where some of the directions are not executable where some other directions are executable. In this situation, clicking the un-executable direction button will do nothing. Only when ALL 4 directions are not executable, the game is ended. 
 
-
-2. We click the `New Game` button.
+2. When we click the `New Game` button.
 Every time we click the `New Game` button, the current game will end.
 
-What happend after the game ends?
+What will happen after the game ends?
 
 A window should pop up to show the final score of current play. You can use `ZStack` to implement this view. By clicking the "Close" button should start a new game. Every time a game ends, the score should be recorded, this will be discussed in later task.
 
@@ -185,18 +185,6 @@ Until now, we only implement the app based on a Portrait-position screen. We sho
 - 10: High Scores Page
 - 10: About Page with animation. 
 - 10: Orientations of Screen
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
