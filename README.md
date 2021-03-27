@@ -13,7 +13,7 @@ Learn to use:
 This is the project where we end up with a real game we can give out
 to friends and family. We are not significantly changing core
 functionality, but we are adding many of the extras that make apps usable.
-See the "assign3.mp4" video on ELMS.
+See the demo video on ELMS.
 
 ## Before you begin
 
@@ -21,9 +21,7 @@ This project is based on the last one, but copying Xcode projects is a
 dicy, multiple-step project, easy to mess up.
 
 Instead, I suggest you create a new project `assign3` in your repository,
-no need for either unit or UI tests. Create a new `model.swift`, and then
-copy and paste whichever portions of your code you want to keep (probably a lot
-of it).
+no need for any tests. Create new files with the same name in your last project ("model.swift" and any other files you created), and copy paste the files to this new project.
 
 Run this version to ensure everything is working correctly, quit out of Xcode,
 `git add` your code, and then commit push to the server. Note that if you
@@ -34,221 +32,163 @@ We realize that `git` is sometimes a challenging, non-intuitive tool,
 especially as we are not using Xcode's GUI interface, but understanding git
 will serve you well in almost any facet of the tech world going forward.
 
-**XXX -- the rest of this has not been updated!**
+## Task 1: Change Model to use Tile
+Your model is conceptually unchanged. However, the view is now going to animate with tile movement, therefore needs to recognize specific tiles in order to identify tile movements.
 
-## Task 1: Change your storyboard.
-Throw away your statically defined "tile" Buttons. You are going to
-programmatically create
-"tiles" on the fly to match your game model.
-
-The storyboard will have the following elements:
-- a `view` (view from the interface builder, just as if it were a button) to use as your square board (add a constraint to ensure that it stays square)
-- a stack of controls, including:
-  - left, right, up, down buttons
-  - newgame
-  - segmented random/determ control
-  - score label
-
-Put the view and the control stack into another stack (the top-level stack), add constraints as I
-did in class to:
-- pull the top-level stack's leading and trailing edges to 10 points off safe
-  area, center it vertically
-- ensure that the square board is as large as possible (pin leading and
-  trailing edges to it's superview
-
-### Adapt to Orientation changes
-Introduce two variations to allow your storyboard to adapt smoothly to
-landscape mode and back again:
-- Introduce a *horizontal* variant to the top-level stack for *compact height*
-- Put the storyboard in horizontal mode, click on "Vary for Traits", and get
-  rid of some constraints that no longer apply in horizontal mode (don't need
-  to pin leading and trailing edges of top-level stack to edges, etc.), and
-  add new ones (pin top and bottom of top-level stack to edges, etc.)
-- Click done varying, go back to vertical mode, and click "Done Varying".
-
-You cannot run at this point because your `IBOutlet`s refer to non-existent views.
-
-
-## Task 2: Change the Model to use Tiles
-
-Your model is conceptually unchanged. However, **the view** is
-now going to animate tile movement, and therefore needs to recognize
-specific tiles in order to identify tile movements.
-
-We are therefore going to change our board's base type from `Int` to a
-new struct `Tile`.
-`Tile`s will have a unique *id*, and  therefore be identifiable even
-as their value (the number) changes. Define `Tile` as follows:
+If you used a simple "Text View" for each tile and an 4 * 4 `Int` array to represent the values for the tiles, in this assignment, you need to change the data model to a "Tile". You should create a data tructure like this:
 ```
-     struct Tile {
-         var val : Int
-         var id : Int
-         var row: Int    // recommended
-         var col: Int    // recommended
-     }
+struct Tile {
+    var val : Int
+    var id : Int
+    var row: Int    // recommended
+    var col: Int    // recommended
+}
+
 ```
+`val` represents the value to be shown on the board, `id` is an unique id for this tile. You may also include `row` and `col` to represent the location of this Tile on the board (They could help you determine the frame of tiles in the view), and also include any other variables as you need. Then, the `board` in your model will change from [[Int]] to [[Tile?]]. With this change, you can explicitly manipulate each tile on the board by working on its corresponding "Tile" data structure.
 
-Your model's `board` will change from `[[Int]]` to  `[[Tile?]]`. Note the
-optional base type; each cell of your board will consist of either a `Tile`
-or a `nil`.
-
-You might want to include `row` and `col` properties to make drawing on the
-board a bit easier. Be sure to update these properties before returning to the
-view controller after a collapse, spawn, or newgame.
-
-**Hint:** If a row has the following tiles and we are collapsing left:
+Suppose we have a row of tiles as: 
 ```
-   (val: 1, id: 13), (val:2, id:14), nil, nil
+(val: 1, id: 13), (val:2, id:14), nil, nil
 ```
-you probably want to have tile 13 disappear, while tile 14 moves to the
-left. This makes animation more straightforward.
+If we collapsing left, we want `id = 13` to disapper, while moving `id = 14` to its left, and change its value to 3. This will make the animation in View more straightforward. You should change shift() function in your model to handle this task.
 
 
-## Change the ViewController to use TileButtons
-Your `updateViewForGame` (substitute whatever name you use) needs to ensure
-that there are buttons on top of the *board* (`viewOutlet` you've attached to
-the square view you put on the storyboard) for each current tile. This
-involves:
-- create buttons for each newly-seen tile and adding as a *subview* to the
-  `board` at the correct location
-- moving the `frame` for each tile that we've already seen
-- removing buttons for any tiles that we had seen before but are no longer in
-  the model
-
-Before you get started, you should create a new subclass `ButtonTile`:
+## Task 2: Change View to use TileView
+For each of "Text View" (or any View structure you created for a tile) should now include a value of `Tile` data structure we just created. You may do this by creating a new `View` structure as:
 ```
-class ButtonTile: UIButton {
+struct TileView: View {
     var tile = Tile(val: 0, id: 0, row: 0, col: 0)
-
-    convenience init(t: Tile) {
-        self.init()
-        tile = t
+    ...
+    
+    init(tile: Tile) {
+        self.tile = tile
+        ...
+    }   
+    
+    var body: some View {
+        Text(tile.val.description)
+        ...
     }
 }
 ```
-where you have defined `Tile` in your new model. You can use a `ButtonTile`
-just like a `UIButton`, but it has the `Tile` information readily at hand
-(crucial for implementing animation via a custom view later).
 
-Your code will be able to recognize tiles from previous steps in the
-application because each tile will have a unique `ID`.
+You can create a method `func getFrame(t: TileView) -> CGRect` to calculate the frame of each `TileView`, and use `Offset` to change the location of each tile shown on the screen. Your code should be able to perform as last assignment since each `TileView` has its unique id, value and frame on the screen. 
 
-At the end of this step you should have a fully functional game again. It
-should adapt well to the orientation changes *except* that existing TileButtons
-might have the wrong size and position until a subsequent swipe.
+You can make a list of `TileView`, and load the `TileView` with `ForEach` when the view gets updated. Each time a new tile is added to the list, or an old tile is removed from the list, or tile in the list changes, the view should get updated. 
 
-**Hint:** You should create a method `func buttonFrame(row: Int, col: Int,
-view: UIView) -> CGRect` 
-that will compute the frame for a `ButtonTile`, based on `view` and the fact
-that your game board will always have four rows of four possible positions.
+You may revise the spawn() method in Model or related method in View so that each time a new tile is spawned, its corresponding Tileview will be added to the list.
 
-**Hint:** adding a button to `board` can be done w/ the following code:
+
+## Task 3: Animation
+You need to implement "tile moving animation" to show the movements of tiles while clicking the direction buttons. 
+
+Hint: You can implement the animation of tile movement by adding animation keywords at 2 locations of your implementation. You may also need to use .offset with variables to determine the start and end location of each tile. Example:
+
+1. tileView:
 ```
-                let button = ButtonTile(t: tileMap[id]!)
-                board.addSubview(button)
+ForEach (0..<tiles.count, id: \.self) { i in
+    tileView[i].offset(x: x[i], y: y[i])
+        .animation(.easeInOut(duration: 1))
 ```
-Later on it can be removed via `tileButton.removeFromSuperView()`
+2. Button:
+```
+Button (action: withAnimation
+{movingUp}) {
+    Text("Up")
+}
+```
 
-**Save early and often by pushing to your repository.**
+There are plenty of ways to make animations in SwiftUI, you do not have to implement the same way as we did here. We will not inspect your code for this project, but only check your UIView.
 
-## Task 3: Custom View
-At this point we want to build a custom view for our board, and have
-`ButtonTile` operate independently of the view controller.
+## Task 4: End of Game
+In the last project, we never handled a situation when our game failed or ended. We should implement a Boolean variable `isDone` in model.swift, and a method `func isGameDone()` to check if the game is ended.
 
-- Subclass `UIView` with a custom `BoardView` by create a new Cocoa Touch
-  file.
-- Move `buttonFrame` your new `BoardView` class.
-- `override func draw(_ rect: CGRect)` to draw the board lines any way you
-  wish, though you must use `UIBezierPath`.
-- `override func layoutSubviews()` to get lay out your buttons in the correct
-  location.
-  
-`draw` is called by iOS whenever a previously unseen portion of the board gets
-seen. Use this just to draw the board's background lines.
+When will the game end?
 
-`layoutSubviews` is the majority of this task. It is called whenever iOS think
-there might have been a change in layout (at app startup, orientation changes,
-and other seemingly random times).
+1. When there is no any empty tile or possible moves of the tiles in the board.
+You should handle the situation where some of the directions are not executable where some other directions are executable. In this situation, clicking the un-executable direction button will do nothing. Only when ALL 4 directions are not executable, the game is ended. 
 
-Your job is to make put each button in it's proper place, set the titles,
-colors, etc. Views should not access view controllers' data directly. Instead make this
-routine entirely standalone, deriving all information by querying its own
-`subviews` property. 
+2. When we click the `New Game` button.
+Every time we click the `New Game` button, the current game will end.
 
-`subviews` is an array of all child view, which in this case is only those
-buttons that the view controller has put on the board. But how to figure out
-where to situate the buttons, and how to figure out color and text of each?
+What will happen after the game ends?
 
-Luckily, these "buttons" are actually `ButtonTile`s. Cast each `UIView` to a
-`ButtonTile` and you now have access to the complete `Tile` associated with
-each button.
+A window should pop up to show the final score of current play. You can use `ZStack` to implement this view. By clicking the "Close" button should start a new game. Every time a game ends, the score should be recorded, this will be discussed in later task.
 
-The view controller's `updateViewFromGame()` method is now quite short. It has
-to:
-- add `ButtonTile`s to the board if the model has a previously-unseen `Tile`.
-- remove `ButtonTile`s from the board if a previously-seen `Tile` no longer
-  exists. 
-- ensure that all remaining `ButtonTile`s have accurate row/col information.
-- update the score
-- ensure that the board's layout / draw methods are called by calling `board.setNeedsDisplay()`
-
-**Do not add any externally-accessed methods or properties in your custom view.**
-All communication from view controller to view should be from the
-`ButtonTiles` in the custom view's `subviews` array.
-
-## Task 4: Animation
-Implement tile animation entirely in your `BoardView` class:
-- animate new tiles but starting them w/ opacity of 0 and animating to opacity
-  1.0
-- animate movement of existing tiles to new locations
-- use opacity again to animate disappearence of previously-seen tiles
-
-**Hint:** Animating tile disappearence in `BoardView` will not work if the
-view controller removes the `ButtonTile` from the board.
 
 ## Task 5: Gestures
-Add up, down, left, and right swipe gestures to the board. The gesture recognizer use your
-game's view controller as a target (first parameter to the
-`UISwipeGestureRecognizer` initializer), but you can attach this either to
-view controller's view, or to the game board. Either works.
+Add up, down, left, and right drag gestures to the board. Each direction gesture should work exactly the same as cliking the direction buttom. The gesture can be attached to your game board by adding `.gesture(DragGesture ...)` at the end of your board view.
 
-## Task 6: TabBarController
-This task is simple: draw out a `TabBarController` in the storyboard, attach
-the game controller (your original `ViewController`), and ensure that the `TabBarController` is the initial
-controller by moving the arrow.
 
-Everything else should continue working the same.
+## Task 6: TabView
+You should create a `TabView` in your ContentView.swift, and include three views inside the TabView. The first one should be your board view, and we will work on the second and third views later on. Your `TabView` should be implemented like this: 
+```
+TabView {
+    Board().tabItem {
+        Label("Board", systemImage: "gamecontroller")
+    }
+    Scores().tabItem {
+        Label("Scores", systemImage: "list.dash")
+    }
+    About().tabItem {
+        Label("About", systemImage: "info.circle")
+    }
+}
+``` 
 
-## Task 7: Implement the *HighController* Scene
+
+## Task 7: Implement the *HighScores* Page
+### For Model:
+1. Create a new data structure Score which includes at least two variables. You will use this data structure to record each game's result. You may want to add more variables and methods as needed. `Hashable` is not necessary but it can make our lives easier to sort a list of Score. An example of this data structure is:
+```
+struct Score: Hashable {
+    var score: Int
+    var time: Date
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(time)
+    }
+    
+    init(score: Int, time: Date) {
+        self.score = score
+        self.time = time
+    }
+}
+```
+2. Create a list of Score, which will record all previous games' results. Add 2 initial data (score = 300 and 400, while date time can be any time) to this list when the app gets initiated. This means that we should see two results in the score page even we never played any one game.
+
+3. Sorting the list. You can do the sorting when the score page appears or each new data point is added to the Score list. 
+
+
+### For View:
 You should:
-- subclass the `UIViewController` to a new `HighController` class. 
-- use interface builder to add a `UITableView`.
-- implement routines for the view controller to call providing a new high
-  score
-- use `UserDefaults` to store and retrieve high scores
-- the the tableview to show at least ten of the top scores with rank / score /
-  date-and-date, as shown in the video.
-- your game should jump to the high-scores screen at the end of a game when
-  calling `isDone()` returns true for the first time.
-- you do not need to worry about landscape mode
+- Create a new file called "Scores.swift", and create a view controller called `Scores`
+- Include a `List View` in this view controller, you should use `ForEach` to traversal through the Score list we just created in the model to show the data of each game. You should include the rank, the score, and the date time of each data point. 
 
+**Important** The score should be sorted from high to low on the list. The data time can be any format, but should include all the information of "hour, minute, second, date and year'.
 
-## Task 8: Implement the *About* Scene
-It doesn't have to be like mine, and it doesn't have use gestures, but it
-should be fancy. Use `UIBezierPath` to draw something a diagram, make a little
-mini-game using dynamic gestures, be creative!
-- You do have to worry about landscape mode. If you do use dynamic animations
-  and they fly away during rotation, it's fine just to have a way to restart
-  in the new orientation
+## Task 8: Implement the *About* Page
+It doesn't have to be like mine, and it doesn't have to use gestures, but it
+should be fancy. Use `UIBezierPath` or `CGPath` to draw something a diagram, make a little
+mini-game or animation, be creative! 
 
+## Task 9: Portrait vs. Landscape
+Until now, we only implement the app based on a Portrait-position screen. We should implement the app in a Landscape screen as well. You can create a variable as `var orientation: UIDeviceOrientation = UIDevice.current.orientation` to check the current orientation of the screen and modify the UIView accordingly. `orientation.isLandscape` will return true if the screen is on a Landscape mode now. And `orientation == UIDeviceOrientation.portraitUpsideDown` will return true if now the screen is now upside down.  We will test your work by rotating the screen, we should see the position of game board and buttons are arranged well on each screen orientation.
 
 ## Grading
  Note that the above tasks are for sequencing your work. They do not match up exactly with this grading rubric:
-- 30: change storyboard and buttons to be dynamic, adapting to orientation/device changes
-- 30: animation, both movement and spawns
-- 10: gestures
-- 10: tabbarcontroller (just with labels saying "High Score" and "by AwesomeWhoever")
-- 10: High scores using a tableview and `UserDefaults`
-- 10: Fancy About scene using dynamic animation. 
+- 30: Animation of tile movement
+- 20: End of game logics
+- 10: Gestures
+- 10: TabView with navigations
+- 10: High Scores Page
+- 10: About Page with animation. 
+- 10: Orientations of Screen
+
+
+
+
+
   
   
