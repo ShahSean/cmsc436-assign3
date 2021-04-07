@@ -35,7 +35,7 @@ will serve you well in almost any facet of the tech world going forward.
 ## Task 1: Change Model to use Tile
 Your model is conceptually unchanged. However, the view is now going to animate with tile movement, therefore needs to recognize specific tiles in order to identify tile movements.
 
-If you used a simple "Text View" for each tile and an 4 * 4 `Int` array to represent the values for the tiles, in this assignment, you need to change the data model to a "Tile". You should create a data tructure like this:
+If you used a simple "Text View" for each tile and an 4 * 4 `Int` array to represent the values for the tiles, in this assignment, you need to change the data model to a "Tile". You should create a data structure like this:
 ```
 struct Tile {
     var val : Int
