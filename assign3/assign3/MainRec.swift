@@ -17,9 +17,10 @@ struct MainRec: View {
                 HStack{
                     ForEach(0..<array.endIndex , id: \.self){ index in
                         ZStack{
+                            // Just passing the value down to decide on the Color in MiniRec
                             MiniRec(value:array[index])
                             if array[index] != 0{
-                            Text(String(array[index]))
+                                Text(String(array[index]))
                                 .foregroundColor(.white)
                                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                                 .font(.system(size: 28))

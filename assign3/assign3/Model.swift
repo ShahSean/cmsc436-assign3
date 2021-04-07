@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 enum Direction{
     case left
     case right
@@ -19,7 +20,8 @@ public class Triples: ObservableObject{
     
     
     
-    @Published var board: [[Tile?]] = []
+//    @Published var board: [[Tile?]] = []
+    @Published var board = [[Tile]](repeating: [Tile](), count: 4)
     @Published var score: Int = 0
     @Published var gameOver: Bool = false
     var seed : SeededGenerator = SeededGenerator(seed:14)
@@ -28,8 +30,9 @@ public class Triples: ObservableObject{
     // re-inits 'board', and any other state you define
     func newgame(rand: Bool) {
         // To initialize to zero
-//        Tile.init(val: 0 , id: UUID(), row: <#T##Int#>, col: <#T##Int#>)
-        board = Array(repeating: Array(repeating: nil , count: 4), count: 4)
+//        Tile.init(val: 0 , id: , row: <#T##Int#>, col: <#T##Int#>)
+        
+//        board = Array(repeating: Array(repeating: nil , count: 4), count: 4)
     
         score = 0
         
@@ -62,7 +65,7 @@ public class Triples: ObservableObject{
         {
             for (j, _) in row.enumerated()
             {
-                if board[i][j]?.val == 0 {
+                if board[i][j].val == 0 {
                     zerosCount += 1
                     zeroTracker[zerosCount] = (i,j)
                 }
@@ -78,7 +81,7 @@ public class Triples: ObservableObject{
             
             // Setting new Random Value to the Randomly selected Index
             if let selectedIndex = zeroTracker[randomIndex]{
-                board [selectedIndex.0][selectedIndex.1]?.val = newRandomValue
+                board [selectedIndex.0][selectedIndex.1].val = newRandomValue
             }
             else{
                 print("oopsi, something went wrong !!")
@@ -105,28 +108,28 @@ public class Triples: ObservableObject{
             for (j, _) in row.enumerated()
             {
                 if j < 3 {
-                    if board[i][j]?.val == 0 {
-                        board[i][j]?.val += board[i][j + 1]?.val ?? 0
-                        board[i][j + 1]?.val = 0
-                    }else if board[i][j]?.val ?? 0 < 3{ // Double Check on this later
-                        if board[i][j]?.val == 1 && board[i][j + 1]?.val == 2 || board[i][j + 1]?.val == 0{
-                            board[i][j]?.val += board[i][j + 1 ]?.val ?? 0
-                            if board[i][j + 1]?.val != 0{
-                                score+=board[i][j]?.val ?? 0
+                    if board[i][j].val == 0 {
+                        board[i][j].val += board[i][j + 1].val
+                        board[i][j + 1].val = 0
+                    }else if board[i][j].val  < 3{ // Double Check on this later
+                        if board[i][j].val == 1 && board[i][j + 1].val == 2 || board[i][j + 1].val == 0{
+                            board[i][j].val += board[i][j + 1 ].val
+                            if board[i][j + 1].val != 0{
+                                score+=board[i][j].val
                             }
-                            board[i][j + 1]?.val = 0
+                            board[i][j + 1].val = 0
                             
-                        }else if board[i][j]?.val == 2 && board[i][j + 1]?.val == 1 || board[i][j + 1]?.val == 0{
-                            board[i][j]?.val += board[i][j + 1]?.val ?? 0
-                            if board[i][j + 1]?.val != 0{
-                                score+=board[i][j]?.val ?? 0
+                        }else if board[i][j].val == 2 && board[i][j + 1].val == 1 || board[i][j + 1].val == 0{
+                            board[i][j].val += board[i][j + 1].val
+                            if board[i][j + 1].val != 0{
+                                score+=board[i][j].val
                             }
-                            board[i][j + 1]?.val = 0
+                            board[i][j + 1].val = 0
                         }
-                    }else if board[i][j]?.val == board[i][j + 1]?.val {
-                        board[i][j]?.val += board[i][j + 1]?.val ?? 0
-                        score+=board[i][j]?.val ?? 0
-                        board[i][j + 1]?.val = 0
+                    }else if board[i][j].val == board[i][j + 1].val {
+                        board[i][j].val += board[i][j + 1].val
+                        score+=board[i][j].val
+                        board[i][j + 1].val = 0
                         
                     }
                     

@@ -11,7 +11,6 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var logicObj = Triples()
-    
     @State var rand: Bool = true
     
     

@@ -8,9 +8,19 @@
 import Foundation
 
 
-struct Tile {
+struct Tile:  Hashable, Identifiable {
+//    var id: ObjectIdentifier
+    
     var val : Int
     public var id = UUID()
     var row: Int    // recommended
-    var col: Int    // recommended
+    var col: Int
+    
+    init(val:Int, id:UUID , row:Int, col: Int) {
+        self.val = val
+        self.id = id
+        self.row = row
+        self.col = col
+    }
+ 
 }
