@@ -15,23 +15,10 @@ struct MainRec: View {
             ForEach(logicObj.board, id:\.self){ array in
                 HStack{
                     ForEach(0..<array.endIndex , id: \.self){ index in
-//                        Text("bye \(index)")
-//                        ZStack{
-
                         TileView(tile: Tile(val: array[index].val, id: UUID(), row: 2, col: 4))
-
-//                            // Just passing the value down to decide on the Color in MiniRec
-//                            MiniRec(value:array[index])
-//                            if array[index] != 0{
-//                                Text(String(array[index]))
-//                                .foregroundColor(.white)
-//                                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-//                                .font(.system(size: 28))
-//                            }
-//                        }
                     }
                 }
-
+                
             }
         }
     }

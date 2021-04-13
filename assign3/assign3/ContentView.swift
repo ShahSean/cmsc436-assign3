@@ -23,9 +23,23 @@ struct ContentView: View {
                 Score_Label().environmentObject(logicObj)
                 Spacer().scaledToFit()
                 
-                MainRec().environmentObject(logicObj)
+                MainRec()
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
+                        if value.translation.width > 0 {
+                            logicObj.collapse(dir: .right)
+                        }else if value.translation.width < 0 {
+                            logicObj.collapse(dir: .left)
+                        }else if value.translation.height > 0 {
+                            logicObj.collapse(dir: .down)
+                        }else if value.translation.height < 0 {
+                            logicObj.collapse(dir: .up)
+                        }
+                    })))
+                    .environmentObject(logicObj)
+                
                 Spacer()
                     .scaledToFit()
+                
                 BtnArea(rand:$rand).environmentObject(logicObj)
                 Spacer()
                     .scaledToFit()
