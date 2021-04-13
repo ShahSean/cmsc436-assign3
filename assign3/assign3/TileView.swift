@@ -19,12 +19,13 @@ struct TileView: View {
     
     var body: some View {
         Text(tile.val.description)
+        Text("Hello from TileView")
     }
 }
 
 
 struct TileView_Previews: PreviewProvider {
     static var previews: some View {
-        TileView(tile: Tile(val: 5, id: <#T##UUID#>.uuid, row: <#T##Int#>, col: <#T##Int#>))
+        TileView(tile: Tile(val: 5, id: UUID() , row: 2, col: 3))
     }
 }

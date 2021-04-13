@@ -13,23 +13,24 @@ struct MainRec: View {
     var body: some View {
         
         VStack{
-            ForEach(logicObj.board, id:\.self){ array in
-                HStack{
-                    ForEach(0..<array.endIndex , id: \.self){ index in
-                        ZStack{
-                            // Just passing the value down to decide on the Color in MiniRec
-                            MiniRec(value:array[index])
-                            if array[index] != 0{
-                                Text(String(array[index]))
-                                .foregroundColor(.white)
-                                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                                .font(.system(size: 28))
-                            }
-                        }
-                    }
-                }
-
-            }
+            TileView(tile: Tile(val: 5, id: UUID(), row: 2, col: 4))
+//            ForEach(logicObj.board, id:\.self){ array in
+//                HStack{
+//                    ForEach(0..<array.endIndex , id: \.self){ index in
+//                        ZStack{
+//                            // Just passing the value down to decide on the Color in MiniRec
+//                            MiniRec(value:array[index])
+//                            if array[index] != 0{
+//                                Text(String(array[index]))
+//                                .foregroundColor(.white)
+//                                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+//                                .font(.system(size: 28))
+//                            }
+//                        }
+//                    }
+//                }
+//
+//            }
         }
     }
 }
