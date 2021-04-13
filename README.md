@@ -35,7 +35,7 @@ will serve you well in almost any facet of the tech world going forward.
 ## Task 1: Change Model to use Tile
 Your model is conceptually unchanged. However, the view is now going to animate with tile movement, therefore needs to recognize specific tiles in order to identify tile movements.
 
-If you used a simple "Text View" for each tile and an 4 * 4 `Int` array to represent the values for the tiles, in this assignment, you need to change the data model to a "Tile". You should create a data tructure like this:
+If you used a simple "Text View" for each tile and an 4 * 4 `Int` array to represent the values for the tiles, in this assignment, you need to change the data model to a "Tile". You should create a data structure like this:
 ```
 struct Tile {
     var val : Int
@@ -99,7 +99,7 @@ Button (action: withAnimation
 }
 ```
 
-There are plenty of ways to make animations in SwiftUI, you do not have to implement the same way as we did here. We will not inspect your code for this project, but only check your UIView.
+There are plenty of ways to make animations in SwiftUI, you do not have to implement the same way as we did here. We will not inspect your code for this project, but only check your View.
 
 ## Task 4: End of Game
 In the last project, we never handled a situation when our game failed or ended. We should implement a Boolean variable `isDone` in model.swift, and a method `func isGameDone()` to check if the game is ended.
@@ -170,11 +170,21 @@ You should:
 
 ## Task 8: Implement the *About* Page
 It doesn't have to be like mine, and it doesn't have to use gestures, but it
-should be fancy. Use `UIBezierPath` or `CGPath` to draw something a diagram, make a little
+should be fancy. Use `Path.addCurve()` or `CGPath` to draw something a diagram, make a little
 mini-game or animation, be creative! 
 
 ## Task 9: Portrait vs. Landscape
-Until now, we only implement the app based on a Portrait-position screen. We should implement the app in a Landscape screen as well. You can create a variable as `var orientation: UIDeviceOrientation = UIDevice.current.orientation` to check the current orientation of the screen and modify the UIView accordingly. `orientation.isLandscape` will return true if the screen is on a Landscape mode now. And `orientation == UIDeviceOrientation.portraitUpsideDown` will return true if now the screen is now upside down.  We will test your work by rotating the screen, we should see the position of game board and buttons are arranged well on each screen orientation.
+Until now, we only implement the app based on a Portrait-position
+screen. We should implement the app in a Landscape screen as well.
+You can create variables
+```
+@Environment(\.verticalSizeClass) var verticalSizeClass
+@Environment(\.horizontalSizeClass) var horizontalSizeClass
+```
+to check the current orientation of the screen and modify the View
+accordingly.  We will test your work by rotating the screen, we
+should see the position of game board and buttons are arranged well
+on each screen orientation.
 
 ## Grading
  Note that the above tasks are for sequencing your work. They do not match up exactly with this grading rubric:
