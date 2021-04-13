@@ -18,9 +18,14 @@ struct TileView: View {
     }
     
     var body: some View {
-        VStack{
-            Text(tile.val.description)
-//            Text("Hello from TileView")
+        ZStack{
+            MiniRec(value: tile.val)
+            if tile.val != 0{
+                Text(String(tile.val.description))
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                    .font(.system(size: 28))
+            }
         }
     }
 }
