@@ -18,7 +18,7 @@ struct MainRec: View {
 //                        Text("bye \(index)")
 //                        ZStack{
 
-                            TileView(tile: Tile(val: 5, id: UUID(), row: 2, col: 4))
+                        TileView(tile: Tile(val: array[index].val, id: UUID(), row: 2, col: 4))
 
 //                            // Just passing the value down to decide on the Color in MiniRec
 //                            MiniRec(value:array[index])
