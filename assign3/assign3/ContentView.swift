@@ -19,7 +19,7 @@ struct ContentView: View {
             Color(red:250 / 255 , green: 200 / 255 , blue:135 / 255)
                 .ignoresSafeArea()
             VStack{
-                Spacer()
+//                Spacer()
                 Score_Label().environmentObject(logicObj)
                 Spacer().scaledToFit()
                 
