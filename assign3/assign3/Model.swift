@@ -20,8 +20,8 @@ public class Triples: ObservableObject{
     
     
     
-//    @Published var board: [[Tile?]] = []
-    @Published var board = [[Tile]](repeating: [Tile](), count: 4)
+    @Published var board: [[Tile]] = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, id: UUID(), row: 0, col: 0), count: 4), count: 4)
+//    @Published var board = [[Tile]](repeating: [Tile](), count: 4)
     @Published var score: Int = 0
     @Published var gameOver: Bool = false
     var seed : SeededGenerator = SeededGenerator(seed:14)
@@ -29,6 +29,8 @@ public class Triples: ObservableObject{
     
     // re-inits 'board', and any other state you define
     func newgame(rand: Bool) {
+//        board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, id: UUID(), row: 0, col: 0), count: 4), count: 4)
+//        board = Array(repeating: Array(repeating: Tile(), count: 4), count: 4)
         score = 0
         
         

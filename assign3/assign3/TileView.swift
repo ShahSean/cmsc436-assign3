@@ -18,8 +18,11 @@ struct TileView: View {
     }
     
     var body: some View {
-        Text(tile.val.description)
-        Text("Hello from TileView")
+        VStack{
+            Text(tile.val.description)
+            Text("Hello from TileView")
+//            Tile(val: <#T##Int#>, id: <#T##UUID#>, row: <#T##Int#>, col: <#T##Int#>)
+        }
     }
 }
 

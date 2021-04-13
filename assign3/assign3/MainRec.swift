@@ -11,13 +11,15 @@ struct MainRec: View {
     @EnvironmentObject var logicObj : Triples
     
     var body: some View {
-        
         VStack{
-            TileView(tile: Tile(val: 5, id: UUID(), row: 2, col: 4))
-//            ForEach(logicObj.board, id:\.self){ array in
-//                HStack{
-//                    ForEach(0..<array.endIndex , id: \.self){ index in
+            ForEach(logicObj.board, id:\.self){ array in
+                HStack{
+                    ForEach(0..<array.endIndex , id: \.self){ index in
+//                        Text("bye \(index)")
 //                        ZStack{
+
+                            TileView(tile: Tile(val: 5, id: UUID(), row: 2, col: 4))
+
 //                            // Just passing the value down to decide on the Color in MiniRec
 //                            MiniRec(value:array[index])
 //                            if array[index] != 0{
@@ -27,10 +29,10 @@ struct MainRec: View {
 //                                .font(.system(size: 28))
 //                            }
 //                        }
-//                    }
-//                }
-//
-//            }
+                    }
+                }
+
+            }
         }
     }
 }
