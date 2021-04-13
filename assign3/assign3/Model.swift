@@ -29,11 +29,6 @@ public class Triples: ObservableObject{
     
     // re-inits 'board', and any other state you define
     func newgame(rand: Bool) {
-        // To initialize to zero
-//        Tile.init(val: 0 , id: , row: <#T##Int#>, col: <#T##Int#>)
-        
-//        board = Array(repeating: Array(repeating: nil , count: 4), count: 4)
-    
         score = 0
         
         

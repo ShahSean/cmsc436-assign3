@@ -19,6 +19,7 @@
 		D81A55AE261D179100DD7CF8 /* MainRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A55AD261D179100DD7CF8 /* MainRec.swift */; };
 		D81A55B1261D17B700DD7CF8 /* BtnArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A55B0261D17B700DD7CF8 /* BtnArea.swift */; };
 		D8666676261D203A007AEC9A /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8666675261D203A007AEC9A /* Tile.swift */; };
+		D8F14AE826250278008947FA /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F14AE726250278008947FA /* TileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		D81A55AD261D179100DD7CF8 /* MainRec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRec.swift; sourceTree = "<group>"; };
 		D81A55B0261D17B700DD7CF8 /* BtnArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BtnArea.swift; sourceTree = "<group>"; };
 		D8666675261D203A007AEC9A /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		D8F14AE726250278008947FA /* TileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				D81A55AD261D179100DD7CF8 /* MainRec.swift */,
 				D81A558E261D16AB00DD7CF8 /* assign3App.swift */,
 				D81A5590261D16AB00DD7CF8 /* ContentView.swift */,
+				D8F14AE726250278008947FA /* TileView.swift */,
 				D81A55B0261D17B700DD7CF8 /* BtnArea.swift */,
 				D81A5592261D16AC00DD7CF8 /* Assets.xcassets */,
 				D81A5597261D16AC00DD7CF8 /* Info.plist */,
@@ -162,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8F14AE826250278008947FA /* TileView.swift in Sources */,
 				D81A559F261D170500DD7CF8 /* Score Label.swift in Sources */,
 				D81A5591261D16AB00DD7CF8 /* ContentView.swift in Sources */,
 				D81A55B1261D17B700DD7CF8 /* BtnArea.swift in Sources */,
