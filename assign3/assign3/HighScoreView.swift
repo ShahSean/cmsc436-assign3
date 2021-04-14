@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HighScoreView: View {
-    @StateObject var scoreList = ScoreList()
+    @EnvironmentObject var scoreList: ScoreList
     let dateFormatter = DateFormatter()
     
     init(){

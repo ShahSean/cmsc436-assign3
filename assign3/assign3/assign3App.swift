@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct assign3App: App {
+    @StateObject var scoreList = ScoreList()
     var body: some Scene {
         WindowGroup {
-            GameView()
+            GameView().environmentObject(scoreList)
         }
     }
 }

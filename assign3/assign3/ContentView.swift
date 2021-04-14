@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @EnvironmentObject var scoreList: ScoreList
     @StateObject var logicObj = Triples()
     @State var rand: Bool = true
-    
+//        .environmentObject(scoreList)
     
     var body: some View {
         ZStack{
@@ -27,12 +27,16 @@ struct ContentView: View {
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
                         if value.translation.width > 0 {
                             logicObj.collapse(dir: .right)
+                            logicObj.spawn()
                         }else if value.translation.width < 0 {
                             logicObj.collapse(dir: .left)
+                            logicObj.spawn()
                         }else if value.translation.height > 0 {
                             logicObj.collapse(dir: .down)
+                            logicObj.spawn()
                         }else if value.translation.height < 0 {
                             logicObj.collapse(dir: .up)
+                            logicObj.spawn()
                         }
                     })))
                     .environmentObject(logicObj)
@@ -52,9 +56,9 @@ struct ContentView: View {
                           dismissButton: Alert.Button.default(
                             Text("Start New Game"),
                             action: {
-//                                let newScore = Score(score: game.score, time: Date())
-//                                scoreList.addScore(newScore)
-//                                game.newgame(mode: selectedGameChoice)
+                                let newScore = Score(score: logicObj.score, time: Date())
+                                scoreList.addNewScore(score: newScore)
+                                logicObj.newgame(rand: rand)
                             }
                           )
                     )

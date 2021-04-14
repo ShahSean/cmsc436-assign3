@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct GameView: View {
+    @EnvironmentObject var scoreList: ScoreList
     var body: some View {
     TabView {
             ContentView().tabItem {
                 Label("Board", systemImage: "gamecontroller")
-            }
+            }.environmentObject(scoreList)
             HighScoreView().tabItem {
                 Label("Scores", systemImage: "list.dash")
-            }
+            }.environmentObject(scoreList)
             About().tabItem {
                 Label("About", systemImage: "info.circle")
             }
