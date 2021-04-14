@@ -9,27 +9,34 @@ import SwiftUI
 
 struct HighScoreView: View {
     @StateObject var scoreList = ScoreList()
+    let dateFormatter = DateFormatter()
+    
+    init(){
+    createDateFormatter()
+        
+    }
     var body: some View {
         NavigationView{
             List(0..<scoreList.scoreList.count, id: \.self) { score in
-                Text("score is  \(scoreList.scoreList[score])" as String)
-            }
-        }.navigationTitle("High Scores")
-        
+                Text("\(score + 1) )" as String)
+                Spacer()
+                Text("\(scoreList.scoreList[score].score)" as String)
+                Spacer()
+                Text("\(dateFormatter.string(from: scoreList.scoreList[score].time))" as String)
+            }.navigationTitle("Highest Scores")
+        }
     }
-    //        Text("Hello From High Score View")
+    
+    func createDateFormatter (){
+        dateFormatter.dateFormat = "HH: mm: ss, d MMM y"
+    }
 }
 
 
-
-struct Score: Hashable, Equatable {
-    //    static func == (lhs: Score, rhs: Score) -> Bool {
-    //        lhs.score == rhs.score
-    //    }
+struct Score: Hashable{
     
     var score: Int
     var time: Date
-//    var id: UUID
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(time)
@@ -38,7 +45,6 @@ struct Score: Hashable, Equatable {
     init(score: Int, time: Date) {
         self.score = score
         self.time = time
-//        self.id = UUID()
     }
 }
 
