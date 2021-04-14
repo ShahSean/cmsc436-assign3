@@ -12,18 +12,12 @@ struct MainRec: View {
     
     var body: some View {
         ZStack{
-//        VStack{
-            ForEach(logicObj.board, id:\.self){ array in
-//                HStack{
-                ForEach(0..<array.endIndex , id: \.self){ index in
-                        TileView(tile: array[index])
-                            .offset(CGSize(width: 85 * array[index].col , height: 85 * array[index].row))
-                            .animation(.easeInOut(duration: 2))
-                    }
+
+            ForEach(logicObj.board.reduce([], +), id:\.id){ tile in
+                        TileView(tile: tile)
+                            .animation(.easeInOut(duration: 1))
                 }
-        }.offset(CGSize(width: -100, height: -80))
-//            }
-//        }
+        }.offset(CGSize(width: -130, height: -5))
     }
 }
 

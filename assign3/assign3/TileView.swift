@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct TileView: View {
-    var tile = Tile(val: 0, id: UUID(), row: 0, col: 0)
+    var tile = Tile(val: 0, row: 0, col: 0)
     
     
     init(tile: Tile) {
@@ -20,19 +20,20 @@ struct TileView: View {
     var body: some View {
         ZStack{
             MiniRec(value: tile.val)
+                
             if tile.val != 0{
                 Text(String(tile.val.description))
                     .foregroundColor(.white)
                     .fontWeight(.bold)
                     .font(.system(size: 28))
             }
-        }
+        }.offset(CGSize(width: 85 * tile.col , height: 85 * tile.row))
     }
 }
 
 
-struct TileView_Previews: PreviewProvider {
-    static var previews: some View {
-        TileView(tile: Tile(val: 5, id: UUID() , row: 2, col: 3))
-    }
-}
+//struct TileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TileView(tile: Tile(val: 5, id: UUID() , row: 2, col: 3))
+//    }
+//}

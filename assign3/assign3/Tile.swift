@@ -15,12 +15,12 @@ struct Tile:  Hashable, Identifiable {
     public var id = UUID()
     var row: Int    // recommended
     var col: Int
-    
-    init(val:Int, id:UUID , row:Int, col: Int) {
-        self.val = val
-        self.id = id
-        self.row = row
-        self.col = col
-    }
- 
+//    
+//    init(val:Int, id:UUID , row:Int, col: Int) {
+//        self.val = val
+//        self.id = id
+//        self.row = row
+//        self.col = col
+//    }
+// 
 }

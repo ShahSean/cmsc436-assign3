@@ -29,8 +29,10 @@ public class Triples: ObservableObject{
     init(){
         self.score = 0
         self.gameOver = false
-        self.board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, id: UUID(), row: 0, col: 0), count: 4), count: 4)
+//        self.board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, row: 0, col: 0), count: 4), count: 4)
+        self.board = []
         self.seed = SeededGenerator(seed:14)
+        newgame(rand: true)
     }
     
     init(triplesGame: Triples) {
@@ -38,13 +40,36 @@ public class Triples: ObservableObject{
         self.gameOver = triplesGame.gameOver
         self.board = triplesGame.board
         self.seed = triplesGame.seed
+        newgame(rand: true)
         
     }
     
     
+    func printBoard() {
+            print("Board: ")
+            for i in 0..<board.count {
+                print("[", terminator:"")
+                for j in 0..<board[i].count {
+                    let b = board[i][j]
+                    print("(val: \(b.val), (\(b.row), \(b.col))  | ", terminator:"")
+                }
+                print("]")
+            }
+        }
+    
     // re-inits 'board', and any other state you define
     func newgame(rand: Bool) {
-        board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, id: UUID(), row: 0, col: 0), count: 4), count: 4)
+//        board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, row: 0, col: 0), count: 4), count: 4)
+        board = []
+        
+        for i in 0..<4{
+            var temp: [Tile] = []
+            for j in 0..<4{
+                temp.append(Tile(val: 0, row: i, col: j))
+            }
+            board.append(temp)
+        }
+        
         score = 0
         
         
@@ -60,7 +85,7 @@ public class Triples: ObservableObject{
         spawn()
         spawn()
         spawn()
-        
+        printBoard()
     }
     
     // This Function Randomly picks an available tile and puts a random value into it.
@@ -101,9 +126,6 @@ public class Triples: ObservableObject{
         else{
             noMoreZeros = true
         }
-        
-        
-        
     }
     
     func isGameOver(triplesGame: Triples) -> Bool {
@@ -217,6 +239,7 @@ public class Triples: ObservableObject{
             rotate()
         }
         setRowsCols()
+        printBoard()
         gameOver = isGameOver(triplesGame: Triples(triplesGame: self))
     }
     
