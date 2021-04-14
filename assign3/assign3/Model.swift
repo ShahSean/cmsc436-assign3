@@ -216,9 +216,19 @@ public class Triples: ObservableObject{
             rotate()
             rotate()
         }
+        setRowsCols()
         gameOver = isGameOver(triplesGame: Triples(triplesGame: self))
     }
     
+    
+    func setRowsCols () {
+        for row in 0..<4{
+            for col in 0..<4{
+                self.board[row][col].row = row
+                self.board[row][col].col = col
+            }
+        }
+    }
     // rotate a square 2D Int array clockwise
     func rotate(){
         board = rotate2D(input: board)

@@ -49,7 +49,6 @@ struct BtnArea: View {
         HStack{
             Button("New Game"){
                 logicObj.gameOver = true
-                logicObj.newgame(rand:rand)
             }
             .frame(minWidth: 90, idealWidth: 150, maxWidth: 200, minHeight: 20, idealHeight: 40, maxHeight: 50, alignment: .center)
             .grayscale(/*@START_MENU_TOKEN@*/0.50/*@END_MENU_TOKEN@*/)
