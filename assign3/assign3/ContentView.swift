@@ -12,9 +12,13 @@ struct ContentView: View {
     @EnvironmentObject var scoreList: ScoreList
     @StateObject var logicObj = Triples()
     @State var rand: Bool = true
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+//    @StateObject var viewMode = verticalSizeClass
+    var viewM = false
+    
     //        .environmentObject(scoreList)
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
     
     var body: some View {
         ZStack{
@@ -24,7 +28,7 @@ struct ContentView: View {
                 VStack{
                     //                Spacer()
                     Score_Label().environmentObject(logicObj)
-                    Spacer().scaledToFit()
+                    Spacer()
                     
                     MainRec()
                         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
@@ -66,11 +70,10 @@ struct ContentView: View {
                           )
                     )
                 }
-            }else { // Horizantal View
+            }else { // Landscape View
                 HStack{
                     VStack{
-                        
-//                        Spacer().scaledToFit()
+
                         
                         MainRec()
                             .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
@@ -89,9 +92,7 @@ struct ContentView: View {
                                 }
                             })))
                             .environmentObject(logicObj)
-                        
-                        Spacer()
-                            .scaledToFit()
+        
                     }
                     Spacer()
                     VStack{
@@ -102,9 +103,13 @@ struct ContentView: View {
 
 //                        Spacer()
                     }
+                    Spacer()
                     VStack{
+                        Spacer()
                         Score_Label().environmentObject(logicObj)
+                        Spacer()
                         RandOrDeter(rand: $rand).environmentObject(logicObj)
+                        Spacer()
                     }
                    
                     
