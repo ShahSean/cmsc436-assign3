@@ -45,7 +45,20 @@ struct ContentView: View {
                     .scaledToFit()
                 RandOrDeter(rand: $rand).environmentObject(logicObj)
                 
-            }
+            }.alert(isPresented:
+                        $logicObj.gameOver){
+                    Alert(title: Text("Game Over!"),
+                          message: Text("Score: \(logicObj.score)"),
+                          dismissButton: Alert.Button.default(
+                            Text("Start New Game"),
+                            action: {
+//                                let newScore = Score(score: game.score, time: Date())
+//                                scoreList.addScore(newScore)
+//                                game.newgame(mode: selectedGameChoice)
+                            }
+                          )
+                    )
+                }
             
         }.onAppear{
             logicObj.newgame(rand: true)

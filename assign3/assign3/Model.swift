@@ -20,10 +20,26 @@ public class Triples: ObservableObject{
     
     
     
-    @Published var board: [[Tile]] = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, id: UUID(), row: 0, col: 0), count: 4), count: 4)
-    @Published var score: Int = 0
+    @Published var board: [[Tile]]
+    @Published var score: Int
     @Published var gameOver: Bool = false
-    var seed : SeededGenerator = SeededGenerator(seed:14)
+    @Published var noMoreZeros: Bool = false
+    var seed : SeededGenerator
+    
+    init(){
+        self.score = 0
+        self.gameOver = false
+        self.board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, id: UUID(), row: 0, col: 0), count: 4), count: 4)
+        self.seed = SeededGenerator(seed:14)
+    }
+    
+    init(triplesGame: Triples) {
+        self.score = triplesGame.score
+        self.gameOver = triplesGame.gameOver
+        self.board = triplesGame.board
+        self.seed = triplesGame.seed
+        
+    }
     
     
     // re-inits 'board', and any other state you define
@@ -66,7 +82,7 @@ public class Triples: ObservableObject{
                 }
             }
         }
-
+        
         
         if (zerosCount != 0){
             
@@ -83,26 +99,58 @@ public class Triples: ObservableObject{
             }
         }
         else{
-            gameOver = true
+            noMoreZeros = true
         }
         
         
         
     }
     
-    func isGameOver() {
-//        return gameOver;
-        print("Is game over?")
+    func isGameOver(triplesGame: Triples) -> Bool {
+        let r = !triplesGame.endGameCollapser(dir: .right)
+        let l = !triplesGame.endGameCollapser(dir: .left)
+        let up = !triplesGame.endGameCollapser(dir: .up)
+        let down = !triplesGame.endGameCollapser(dir: .down)
+        
+        if (noMoreZeros && r && l && down && up){
+            return true
+        }
+        return false
     }
     
-    // rotate a square 2D Int array clockwise
-    func rotate(){
-        board = rotate2D(input: board)
-    }
     
+    func endGameCollapser (dir: Direction) -> Bool{
+        var gameEnded = false
+        
+        switch dir {
+        case Direction.left:
+            gameEnded = shift()
+        case Direction.right:
+            rotate()
+            rotate()
+            gameEnded =  shift()
+            rotate()
+            rotate()
+        case Direction.up:
+            rotate()
+            rotate()
+            rotate()
+            gameEnded = shift()
+            rotate()
+        case Direction.down:
+            rotate()
+            gameEnded =  shift()
+            rotate()
+            rotate()
+            rotate()
+        }
+        
+        return gameEnded
+    }
     
     // collapse to the left
-    func shift() {
+    func shift() -> Bool{
+        var successShift = false
         for (i,row) in board.enumerated()
         {
             for (j, _) in row.enumerated()
@@ -111,6 +159,7 @@ public class Triples: ObservableObject{
                     if board[i][j].val == 0 {
                         board[i][j].val += board[i][j + 1].val
                         board[i][j + 1].val = 0
+                        successShift = true
                     }else if board[i][j].val  < 3{ // Double Check on this later
                         if board[i][j].val == 1 && board[i][j + 1].val == 2 || board[i][j + 1].val == 0{
                             board[i][j].val += board[i][j + 1 ].val
@@ -118,6 +167,7 @@ public class Triples: ObservableObject{
                                 score+=board[i][j].val
                             }
                             board[i][j + 1].val = 0
+                            successShift = true
                             
                         }else if board[i][j].val == 2 && board[i][j + 1].val == 1 || board[i][j + 1].val == 0{
                             board[i][j].val += board[i][j + 1].val
@@ -125,17 +175,20 @@ public class Triples: ObservableObject{
                                 score+=board[i][j].val
                             }
                             board[i][j + 1].val = 0
+                            successShift = true
                         }
                     }else if board[i][j].val == board[i][j + 1].val {
                         board[i][j].val += board[i][j + 1].val
                         score+=board[i][j].val
                         board[i][j + 1].val = 0
+                        successShift = true
                         
                     }
                     
                 }
             }
         }
+        return successShift
     }
     
     // collapse in specified direction using shift() and rotate()
@@ -163,8 +216,15 @@ public class Triples: ObservableObject{
             rotate()
             rotate()
         }
+        gameOver = isGameOver(triplesGame: Triples(triplesGame: self))
+    }
+    
+    // rotate a square 2D Int array clockwise
+    func rotate(){
+        board = rotate2D(input: board)
     }
 }
+
 
 
 
