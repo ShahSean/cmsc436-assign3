@@ -29,10 +29,10 @@ public class Triples: ObservableObject{
     init(){
         self.score = 0
         self.gameOver = false
-//        self.board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, row: 0, col: 0), count: 4), count: 4)
+        //        self.board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, row: 0, col: 0), count: 4), count: 4)
         self.board = []
         self.seed = SeededGenerator(seed:14)
-        newgame(rand: true)
+        
     }
     
     init(triplesGame: Triples) {
@@ -40,26 +40,12 @@ public class Triples: ObservableObject{
         self.gameOver = triplesGame.gameOver
         self.board = triplesGame.board
         self.seed = triplesGame.seed
-        newgame(rand: true)
         
     }
-    
-    
-    func printBoard() {
-            print("Board: ")
-            for i in 0..<board.count {
-                print("[", terminator:"")
-                for j in 0..<board[i].count {
-                    let b = board[i][j]
-                    print("(val: \(b.val), (\(b.row), \(b.col))  | ", terminator:"")
-                }
-                print("]")
-            }
-        }
-    
+
     // re-inits 'board', and any other state you define
     func newgame(rand: Bool) {
-//        board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, row: 0, col: 0), count: 4), count: 4)
+        //        board = [[Tile]](repeating: [Tile](repeating: Tile(val: 0, row: 0, col: 0), count: 4), count: 4)
         board = []
         
         for i in 0..<4{
@@ -85,7 +71,7 @@ public class Triples: ObservableObject{
         spawn()
         spawn()
         spawn()
-        printBoard()
+        
     }
     
     // This Function Randomly picks an available tile and puts a random value into it.
@@ -169,50 +155,52 @@ public class Triples: ObservableObject{
         
         return gameEnded
     }
+
     
-    // collapse to the left
-    func shift() -> Bool{
-        var successShift = false
-        for (i,row) in board.enumerated()
-        {
-            for (j, _) in row.enumerated()
+    
+//     collapse to the left
+        func shift() -> Bool{
+            var successShift = false
+            for (i,row) in board.enumerated()
             {
-                if j < 3 {
-                    if board[i][j].val == 0 {
-                        board[i][j].val += board[i][j + 1].val
-                        board[i][j + 1].val = 0
-                        successShift = true
-                    }else if board[i][j].val  < 3{ // Double Check on this later
-                        if board[i][j].val == 1 && board[i][j + 1].val == 2 || board[i][j + 1].val == 0{
-                            board[i][j].val += board[i][j + 1 ].val
-                            if board[i][j + 1].val != 0{
-                                score+=board[i][j].val
-                            }
-                            board[i][j + 1].val = 0
+                for (j, _) in row.enumerated()
+                {
+                    if j < 3 {
+                        if board[i][j].val == 0 {
+                            board[i][j + 1].val += board[i][j].val
+                            board[i][j] = board[i][j+1]
                             successShift = true
-                            
-                        }else if board[i][j].val == 2 && board[i][j + 1].val == 1 || board[i][j + 1].val == 0{
-                            board[i][j].val += board[i][j + 1].val
-                            if board[i][j + 1].val != 0{
-                                score+=board[i][j].val
+                        }else if board[i][j].val  < 3{
+                            if board[i][j].val == 1 && board[i][j + 1].val == 2 || board[i][j + 1].val == 0{
+                                board[i][j+1].val += board[i][j].val
+                                if board[i][j + 1].val != 0{
+                                    score+=board[i][j+1].val
+                                }
+                                board[i][j] = board[i][j+1]
+                                successShift = true
+
+                            }else if board[i][j].val == 2 && board[i][j + 1].val == 1 || board[i][j + 1].val == 0{
+                                board[i][j+1].val += board[i][j].val
+                                if board[i][j + 1].val != 0{
+                                    score+=board[i][j+1].val
+                                }
+                                board[i][j] = board[i][j+1]
+                                successShift = true
                             }
-                            board[i][j + 1].val = 0
+                        }else if board[i][j].val == board[i][j + 1].val {
+                            board[i][j+1].val += board[i][j].val
+                            score+=board[i][j+1].val
+                            board[i][j] = board[i][j+1]
                             successShift = true
+
                         }
-                    }else if board[i][j].val == board[i][j + 1].val {
-                        board[i][j].val += board[i][j + 1].val
-                        score+=board[i][j].val
-                        board[i][j + 1].val = 0
-                        successShift = true
-                        
+
                     }
-                    
                 }
             }
+            return successShift
         }
-        return successShift
-    }
-    
+
     // collapse in specified direction using shift() and rotate()
     func collapse(dir: Direction) {
         
@@ -239,7 +227,6 @@ public class Triples: ObservableObject{
             rotate()
         }
         setRowsCols()
-        printBoard()
         gameOver = isGameOver(triplesGame: Triples(triplesGame: self))
     }
     

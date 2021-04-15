@@ -27,7 +27,7 @@ struct TileView: View {
                     .fontWeight(.bold)
                     .font(.system(size: 28))
             }
-        }.offset(CGSize(width: 85 * tile.col , height: 85 * tile.row))
+        }
     }
 }
 

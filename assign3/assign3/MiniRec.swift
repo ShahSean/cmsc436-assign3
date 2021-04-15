@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MiniRec: View {
     @EnvironmentObject var logicObj : Triples
-    @State var value:Int
+    var value:Int
     var body: some View {
         
         if value == 0{

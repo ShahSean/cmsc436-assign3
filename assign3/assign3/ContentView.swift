@@ -28,7 +28,7 @@ struct ContentView: View {
                 VStack{
                     //                Spacer()
                     Score_Label().environmentObject(logicObj)
-                    Spacer()
+//                    Spacer()
                     
                     MainRec()
                         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
