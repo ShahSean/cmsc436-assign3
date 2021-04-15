@@ -16,7 +16,7 @@ struct MainRec: View {
             ForEach(logicObj.board.reduce([], +), id:\.id){ tile in
                         TileView(tile: tile)
                             .offset(CGSize(width: 85 * tile.col , height: 85 * tile.row))
-                            .animation(.easeInOut(duration: 1))
+                            .animation(.easeInOut(duration: 0.65))
                 }
         }.offset(CGSize(width: -130, height: -130))
         .frame(width: 85 * 4, height: 85 * 4)

@@ -10,6 +10,7 @@ import SwiftUI
 struct About: View {
     @State private var offset:CGFloat = 800.0
     @State private var btnClicked = false
+    private var anim = Animation.easeIn(duration: 8.0).repeatForever(autoreverses: false)
     var body: some View {
         ZStack{
             Color(btnClicked ? .black : .white).ignoresSafeArea()
@@ -25,33 +26,32 @@ struct About: View {
             .font(.title)
             .cornerRadius(8.0)
             .opacity( btnClicked ? 0 : 1)
-            
-            Text("Hello \n This app is a class project done by Shahryar (Sean) Shagoshtabi.\n" +
-                    " am from Iran, and I speak Farsi, English, and Dari. I got my high school diploma in 2011, and ever since then I have been studying in different universities and different majors such as Polymer Engineering, Accounting, and Computer Networks. I moved to the U.S in November 2016, and after settling, in January 2017, I started studying Computer Science at Montgomery College.")
-                
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(.yellow)
-                .multilineTextAlignment(.center)
-                .lineSpacing(11.0)
-                .padding(7)
-                .padding(.horizontal, 30)
-                .rotation3DEffect(
-                    .degrees(40),
-                    axis: (x: 1, y: 0, z: 0.0))
-                .shadow(color: .white, radius: 4, x:0 , y:5 )
-                .frame(width:340 , height: 1500)
-                .offset(x: 0.0, y: offset)
-                .animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/(duration:5))
-                .onDisappear{
-                    offset = 800
-                }
-        }.onDisappear{
-            btnClicked = false
-//            offset = 800.00
+            if btnClicked{
+                Text("A long long time ago in a galaxy far, far away... \n \n Shahryar (Sean) Shagoshtabi.\n \n" +
+                        " Made this game as a project for his IOS programming class. \n \n It was dark days and Sean was not sure if he can make it for the deadline of this project. \n \n But with the support of resistance (Dr. Google), Sean was able to make his best effort...")
+                    
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.yellow)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(11.0)
+                    .padding(7)
+                    .padding(.horizontal, 30)
+                    .rotation3DEffect(
+                        .degrees(40),
+                        axis: (x: 1, y: 0, z: 0.0))
+                    .shadow(color: .white, radius: 4, x:0 , y:5 )
+                    .frame(width:340 , height: 1500)
+                    .offset(x: 0.0, y: offset)
+                    .animation(anim)
+                    .onDisappear{
+                        btnClicked = false
+                        offset = 800
+                    }
+            }
         }
     }
- 
+    
 }
 
 struct About_Previews: PreviewProvider {

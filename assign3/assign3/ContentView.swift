@@ -13,12 +13,7 @@ struct ContentView: View {
     @StateObject var logicObj = Triples()
     @State var rand: Bool = true
     @Environment(\.verticalSizeClass) var verticalSizeClass
-//    @StateObject var viewMode = verticalSizeClass
     var viewM = false
-    
-    //        .environmentObject(scoreList)
-    
-    
     
     var body: some View {
         ZStack{
@@ -26,26 +21,35 @@ struct ContentView: View {
                 .ignoresSafeArea()
             if verticalSizeClass == .regular{
                 VStack{
-                    //                Spacer()
                     Score_Label().environmentObject(logicObj)
-//                    Spacer()
-                    
                     MainRec()
-                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
-                            if value.translation.width > 0 {
-                                logicObj.collapse(dir: .right)
-                                logicObj.spawn()
-                            }else if value.translation.width < 0 {
-                                logicObj.collapse(dir: .left)
-                                logicObj.spawn()
-                            }else if value.translation.height > 0 {
-                                logicObj.collapse(dir: .down)
-                                logicObj.spawn()
-                            }else if value.translation.height < 0 {
-                                logicObj.collapse(dir: .up)
-                                logicObj.spawn()
+                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onEnded({ value in
+                            
+                            if (abs(value.startLocation.x - value.location.x) > abs(value.startLocation.y - value.location.y)){
+                                if value.startLocation.x > value.location.x {
+                                    withAnimation {
+                                        logicObj.collapse(dir: Direction.left)
+                                        logicObj.spawn();
+                                    }
+                                } else if value.startLocation.x < value.location.x {
+                                    withAnimation {logicObj.collapse(dir: Direction.right)
+                                        logicObj.spawn();
+                                    }
+                                }
+                            }else{
+                                if value.startLocation.y < value.location.y {
+                                    withAnimation {logicObj.collapse(dir: Direction.down)
+                                        logicObj.spawn();
+                                    }
+                                } else if value.startLocation.y > value.location.y {
+                                    withAnimation {logicObj.collapse(dir: Direction.up)
+                                        logicObj.spawn();
+                                    }
+                                }
                             }
-                        })))
+                            
+                        }))
                         .environmentObject(logicObj)
                     
                     Spacer()
@@ -73,7 +77,7 @@ struct ContentView: View {
             }else { // Landscape View
                 HStack{
                     VStack{
-
+                        
                         
                         MainRec()
                             .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded(({value in
@@ -92,16 +96,16 @@ struct ContentView: View {
                                 }
                             })))
                             .environmentObject(logicObj)
-        
+                        
                     }
                     Spacer()
                     VStack{
                         Spacer().scaledToFit()
                         BtnArea(rand:$rand).environmentObject(logicObj)
                         Spacer().scaledToFit()
-                           
-
-//                        Spacer()
+                        
+                        
+                        //                        Spacer()
                     }
                     Spacer()
                     VStack{
@@ -111,7 +115,7 @@ struct ContentView: View {
                         RandOrDeter(rand: $rand).environmentObject(logicObj)
                         Spacer()
                     }
-                   
+                    
                     
                 }.alert(isPresented:
                             $logicObj.gameOver){
@@ -132,14 +136,7 @@ struct ContentView: View {
             logicObj.newgame(rand: true)
         }
     }
-    
-    
-    
-    
 }
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
